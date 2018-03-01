@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>车险未决管理系统</title>
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+<meta http-equiv="description" content="This is my page">
+<link rel="stylesheet" type="text/css" href="js/easyui/common/index.css" />
+<link rel="stylesheet" type="text/css" href="js/easyui/jquery-easyui-theme/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="js/easyui/jquery-easyui-theme/icon.css">
+<link rel="stylesheet" type="text/css" href="js/easyui/icons/icon-all.css">
+
+<script type="text/javascript" src="js/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="js/easyui/jquery-easyui-1.5.3/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="js/index.js"></script>  
+<script language="JavaScript">
+
+</script>
+
+</head>
+<body class="easyui-layout">
+<!--     <div id="mainLayout" class="easyui-layout hidden" data-options="fit: true"> -->
+        <div id="northPanel" data-options="region: 'north', border: false" style="height: 80px; overflow: hidden;">
+            <div id="topbar" class="top-bar">
+                <div class="top-bar-left">
+                    <h1 style="margin-left: 10px; margin-top: 10px;color: #fff">人保未决<span style="color: #3F4752">后台管理系统</span></h1>
+                </div>
+                <div class="top-bar-right">
+                    <div id="timerSpan"></div>
+                    <div id="themeSpan">
+                        <a id="btnHideNorth" class="easyui-linkbutton" data-options="plain: true, iconCls: 'layout-button-up'"></a>
+                    </div>
+                </div>
+            </div>
+            <div id="toolbar" class="panel-header panel-header-noborder top-toolbar">
+                <div id="infobar">
+                    <span class="icon-hamburg-user" style="padding-left: 25px; background-position: left center;">
+                       	您好
+                    </span>
+                </div>
+               
+<!--                 <div id="buttonbar"> -->
+<!--                     <span>更换皮肤：</span> -->
+<!--                     <select id="themeSelector"></select> -->
+<!--                     <a href="javascript:void(0);" class="easyui-menubutton" data-options="menu:'#layout_north_set'" iconCls="icon-standard-cog">系统</a>   -->
+<!--                     <div id="layout_north_set"> -->
+<!-- 						<div id="btnFullScreen" data-options="iconCls:'key'">全屏切换</div> -->
+<!-- 						<div id="btnExit" data-options="iconCls:'logout'">退出系统</div> -->
+<!-- 					</div> -->
+<!--                     <a id="btnShowNorth" class="easyui-linkbutton" data-options="plain: true, iconCls: 'layout-button-down'" style="display: none;"></a> -->
+<!--                 </div> -->
+            </div>
+        </div>
+        
+
+<!-- 	<div region="north" border="true" split="true" style="overflow: hidden; height: 80px;"> -->
+<!-- 		<div class="top-bg"> -->
+<!-- 			<a href="<%=basePath%>j_spring_security_logout">退出</a> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
+	<div region="south" border="true" split="true" style="overflow: hidden; height: 40px;">
+		<div class="footer">
+			版权所有：杭州人保
+		</div>
+	</div>
+	<div region="west" split="true" title="导航菜单" style="width: 200px;">
+		<div id="aa" class="easyui-accordion" style="position: absolute; top: 27px; left: 0px; right: 0px; bottom: 0px;">
+			<div title="汇总报表" iconcls="icon-save" style="overflow: auto; padding: 10px;">
+ 				<ul class="easyui-tree" id="title1tree"></ul> 
+					<div>
+					<!-- 	<a id="btn" href="#" onclick="cc()"  class="easyui-linkbutton" style="width:98%;margin-bottom:5px;" 
+						data-options="plain:true,iconCls:'icon-hamburg-future'" >权限管理</a>-->
+						<a href="#" onclick="showSubMenu('/user/findindex.do', '用户管理', 'default')">权限管理</a>
+					</div>
+					<div>
+						<a id="btn" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-hamburg-future'" style="width:98%;margin-bottom:5px;" 
+						onclick="window.mainpage.mainTabs.addModule('个人报表','${ctx}/toQuartzCron.do','icon-hamburg-future')">个人报表</a>
+					</div>
+			</div>
+			<div title="滞留案件" iconcls="icon-reload" style="padding: 10px;">
+<!-- 				<ul class="easyui-tree" id="title2tree" data-options="lines:true"></ul> -->
+
+					<div>
+						<a id="btn" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-hamburg-full-time'" style="width:98%;margin-bottom:5px;" onclick="window.mainpage.mainTabs.addModule('定时任务','${ctx}/toList.do','icon-hamburg-full-time')">分部滞留案件统计</a>
+					</div>
+					<div>
+						<a id="btn" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-hamburg-future'" style="width:98%;margin-bottom:5px;" onclick="window.mainpage.mainTabs.addModule('定时','${ctx}/toQuartzCron.do','icon-hamburg-future')">个人滞留案件统计</a>
+					</div>
+			</div>
+		</div>
+	</div>
+	<div id="mainPanle" region="center" style="overflow: hidden;">
+		<div id="tabs" class="easyui-tabs" fit="true" border="false">
+			<div title="欢迎使用" style="padding: 20px; overflow: hidden;" id="home">
+				<h1>Welcome to jQuery UI!</h1>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

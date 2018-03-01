@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.picc.dao.RacPrivilegeMapper">
+	<resultMap id="BaseResultMap" type="com.picc.bean.sys.RacPrivilege">
+		<result column="rac_privilege_id" property="racPrivilegeId" jdbcType="VARCHAR" />
+		<result column="abbr_name" property="abbrName" jdbcType="VARCHAR" />
+		<result column="parent_id" property="parentId" jdbcType="VARCHAR" />
+		<result column="tree_pack_id" property="treePackId" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+		<result column="rp_type" property="rpType" jdbcType="VARCHAR" />
+		<result column="rp_type_code" property="rpTypeCode" jdbcType="VARCHAR" />
+		<result column="rp_sys_remark" property="rpSysRemark" jdbcType="VARCHAR" />
+		<result column="rp_state" property="rpState" jdbcType="VARCHAR" />
+		
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		rac_privilege_id,abbr_name,parent_id,tree_pack_id,name,description,
+		rp_type,rp_sys_remark,rp_state
+	</sql>
+
+	<select id="listPrivilegeByRoleId" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select 
+			pri.rac_privilege_id,pri.parent_id,pri.tree_pack_id,pri.rp_type,pri.rp_type_code,pri.rp_sys_remark,pri.rp_state
+		from 
+			rac_rl_pa_rel pa
+		left join
+			rac_role rol ON pa.rac_role_id=rol.rac_role_id
+		left join
+			rac_privilege pri ON pa.rac_privilege_id=pri.rac_privilege_id
+		where 
+			rol.rac_role_id=#{roleId,jdbcType=VARCHAR}
+		and
+			pri.rp_state='Y'
+	</select>
+  
+
+</mapper>

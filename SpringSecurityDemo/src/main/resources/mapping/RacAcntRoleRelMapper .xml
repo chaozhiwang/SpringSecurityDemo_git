@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.picc.dao.RacAcntRoleRelMapper">
+	<resultMap id="RacAcntRoleMap" type="com.picc.bean.sys.RacAcntRoleRel">
+		<result column="rac_acnt_role_rel_id" property="racAcntRoleRelId"
+			jdbcType="VARCHAR" />
+		<result column="user_acnt_id" property="userAcntId" jdbcType="VARCHAR" />
+		<result column="rac_role_id" property="racRoleId" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="RacRoleMap" type="com.picc.bean.sys.RacRole">
+		<result column="rac_role_id" property="racRoleId" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="code" property="code" jdbcType="VARCHAR" />
+		<result column="description" property="description" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<resultMap id="RacRlPaRelMap" type="com.picc.bean.sys.RacRlPaRel">
+		<result column="rac_rl_pa_rel_id" property="racRlPaRelId" jdbcType="VARCHAR" />
+		<result column="rac_role_id" property="racRoleId" jdbcType="VARCHAR" />
+		<result column="rac_privilege_id" property="racPrivilegeId" jdbcType="VARCHAR" />
+	</resultMap>
+
+
+	<sql id="RacAcntRole_Column_List">
+		rac_acnt_role_rel_id,user_acnt_id,rac_role_id
+	</sql>
+
+	<!-- 	查询所有角色 -->
+	<select id="listAllRoles" resultMap="RacRoleMap">
+		select 
+			rac_role_id,name,code,description
+		from 
+			rac_role
+	</select>
+
+
+	<select id="listRacRoleIds" resultType="java.lang.String"
+		parameterType="java.lang.String">
+		select
+		<include refid="RacAcntRole_Column_List" />
+		from
+		ac_acnt_role_rel
+		where
+		user_acnt_id=#{acntId,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 	获取用户角色 -->
+	<select id="listUserAcntRoles" resultMap="RacRoleMap" parameterType="java.lang.String">
+		select ro.rac_role_id ,ro.name,ro.code,ro.description
+		from
+			user_acnt u
+		left join
+			rac_acnt_role_rel re ON u.user_acnt_id=re.user_acnt_id
+		left join
+			rac_role ro ON re.rac_role_id=ro.rac_role_id
+		where
+			u.uacnt_state='Y' AND u.user_acnt_id=#{userAcntId,jdbcType=VARCHAR};
+	</select>
+
+	
+
+
+
+
+
+</mapper>

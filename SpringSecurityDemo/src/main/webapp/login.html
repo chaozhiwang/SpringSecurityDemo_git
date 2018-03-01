@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>车险未决管理系统</title>
+<link href="css/style.css" rel="stylesheet" type="text/css" media="all"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+<meta name="keywords" content="" />
+</head>
+<body>
+<div class="back_top_div"></div>
+<div class="login">
+	<div class="login-top">
+		<div><h2>车险未决管理系统</h2></div>
+		<div class="pic_1">
+			<img id="u17_img" class="img " src="images/u17.png"/>
+		</div>
+		
+		<div class="login_right">
+			<p>用户登录</p>
+<!-- 			 <form action="login.do" method="post"> -->
+				<input type="text" id="username" name="username" value="登录帐号" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '登录帐号';}">
+				<input type="password" id="password" name="password" value="password" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = '密码';}">
+				<select style="width:200px;height:30px;" id="acntList" name="userType" >
+				</select>
+				
+				<div class="forgot">
+					<input type="submit" onclick="login()"  value="登录" >
+				</div>
+				<div id="errorMsg"></div>
+<!-- 			</form> -->
+			
+		</div>
+	</div>
+</div>	
+<script type="text/javascript" src="js/jquery/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="js/jquery/jquery.md5.js"></script>
+<script type="text/javascript" src="js/login.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+</body>
+</html>

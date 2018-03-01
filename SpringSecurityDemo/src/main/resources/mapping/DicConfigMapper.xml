@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.picc.dao.DicConfigMapper">
+	<resultMap id="BaseResultMap" type="com.picc.bean.dic.DicConfig">
+		<result column="dic_config_id" property="dicConfigId" jdbcType="VARCHAR" />
+		<result column="abbr_name" property="abbrName" jdbcType="VARCHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="code" property="code" jdbcType="VARCHAR" />
+		<result column="dc_state" property="dcState" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		dic_config_id,abbr_name,name,code,dc_state
+	</sql>
+
+	<select id="getDicConfigIdByAcntType" resultType="java.lang.String" parameterType="java.lang.String">
+		select
+			dic_config_id
+		from
+			dic_config
+		where
+			code=#{anctType,jdbcType=VARCHAR}
+		and
+			dc_state='Y';
+	</select>
+
+</mapper>

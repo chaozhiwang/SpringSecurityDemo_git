@@ -1,0 +1,260 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<title></title>
+
+
+<link rel="stylesheet" type="text/css" href="plugins/easyui/common/index.css" />
+<link rel="stylesheet" type="text/css" href="plugins/easyui/jquery-easyui-theme/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="plugins/easyui/jquery-easyui-theme/icon.css">
+<link rel="stylesheet" type="text/css" href="plugins/easyui/icons/icon-all.css">
+
+<script type="text/javascript" src="plugins/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="plugins/easyui/jquery-easyui-1.5.3/jquery.easyui.min.js"></script>
+
+<script type="text/javascript" src="js/index.js"></script>  
+</head>
+<body>
+<div id="tt" >   
+    <div >   
+       
+		<table id="dg"></table>   
+    </div>   
+
+</div>  
+
+<div id="dlg">
+	
+	<form id="ff" method="post">
+	    <div>
+			<label for="name">job名称:</label>
+			<input class="easyui-validatebox" type="text" name="name" data-options="required:true" />
+	    </div>
+	      <div>
+			<label for="name">job类型:</label>
+			<select id="cc" class="easyui-combobox" name="dept" style="width:200px;">
+			    <option value="aa">aitem1</option>
+			    <option>bitem2</option>
+			    <option>bitem3</option>
+			    <option>ditem4</option>
+			    <option>eitem5</option>
+			</select>
+	    </div>
+	   
+	</form>
+</div>  
+<script type="text/javascript">
+var dg;
+var dg_running;
+var d;
+$(function(){   
+	dg=$('#dg').datagrid({    
+    url:'${ctx}/queryJobs1.do',
+    fit : true,
+	fitColumns : true,
+// 	border : false,
+	idField : 'id',
+	striped:true,
+	pagination:true,
+	rownumbers:true,
+	pageNumber:1,
+	pageSize : 20,
+	pageList : [ 10, 20, 30, 40, 50 ],
+	remoteSort:false,
+	singleSelect:true,
+    columns:[[    
+        {field:'TRIGGER_NAME',title:'Trigger 名称',sortable:true,width:30},    
+        {field:'TRIGGER_GROUP',title:'Trigger 分组',sortable:true,width:60},
+        {field:'next_fire_time',title:'下次执行时间',sortable:true,width:15,editor: "text"},
+        {field:'prev_fire_time',title:'上次执行时间',sortable:true,width:15},
+        {field:'statu',title:'Trigger 状态',sortable:true},
+        {field:'start_time',title:'开始时间',sortable:true}
+    ]],
+    toolbar:'#tb',
+    autoEditing: true,          //该属性启用双击行时自定开启该行的编辑状态
+    singleEditing: true,
+    onAfterEdit:function(rowIndex, rowData, changes){
+    	sureUpd(rowData);
+    }
+	});
+	
+});
+
+$('#tt').tabs({    
+	fit:true,
+    border:false,    
+    onSelect:function(title,index){    
+    	if(index==1){
+    		dg_running=$('#dg_running').datagrid({    
+    		    url:'${ctx}/scheduleJob/running/json',
+    		    fit : true,
+    			fitColumns : true,
+    			border : false,
+    			idField : 'id',
+    			striped:true,
+    			pagination:true,
+    			rownumbers:true,
+    			pageNumber:1,
+    			pageSize : 20,
+    			pageList : [ 10, 20, 30, 40, 50 ],
+    			remoteSort:false,
+    			singleSelect:true,
+    		    columns:[[    
+    		        {field:'name',title:'任务名',sortable:true,width:30},    
+    		        {field:'group',title:'任务组',sortable:true,width:30},
+    		        {field:'cronExpression',title:'cron表达式',sortable:true,width:70,editor: "text"},
+    		        {field:'status',title:'状态',sortable:true,width:30},
+    		        {field:'className',title:'任务类',sortable:true},
+    		        {field:'description',title:'描述',sortable:true}
+    		    ]]
+    			});
+    	}
+    }    
+});  
+
+//添加
+function add() {
+	d=$("#dlg").dialog({   
+	    title: '添加定时任务',    
+	    width: 500,    
+	    height: 300,    
+// 	    href:'${ctx}/addJob1.do',
+	    modal:true,
+	    buttons:[{
+			text:'确认',
+			handler:function(){
+				$("#mainform").submit(); 
+			}
+		},{
+			text:'取消',
+			handler:function(){
+					d.panel('close');
+				}
+		}]
+	});
+}
+
+//暂停
+function stop(){
+	var row = dg.datagrid('getSelected');
+	if(rowIsNull(row)) return;
+	parent.$.messager.confirm('提示', '确定要暂停任务？', function(data){
+		if (data){
+			$.ajax({
+				type:'get',
+				url:"${ctx}/scheduleJob/"+row.name+"/"+row.group+"/stop",
+				success: function(data){
+					if(data=='success'){
+						dg.datagrid('reload');
+						parent.$.messager.show({ title : "提示",msg: "操作成功！", position: "bottomRight" });
+					}else{
+						parent.$.messager.alert(data);
+					}  
+				}
+			});
+		}
+	});
+}
+
+//恢复
+function resume(){
+	var row = dg.datagrid('getSelected');
+	if(rowIsNull(row)) return;
+	parent.$.messager.confirm('提示', '确定要恢复任务？', function(data){
+		if (data){
+			$.ajax({
+				type:'get',
+				url:"${ctx}/scheduleJob/"+row.name+"/"+row.group+"/resume",
+				success: function(data){
+					if(data=='success'){
+						dg.datagrid('reload');
+						parent.$.messager.show({ title : "提示",msg: "操作成功！", position: "bottomRight" });
+					}else{
+						parent.$.messager.alert(data);
+					}  
+				}
+			});
+		}
+	});
+}
+
+//删除
+function del(){
+	var row = dg.datagrid('getSelected');
+	if(rowIsNull(row)) return;
+	parent.$.messager.confirm('提示', '删除后无法恢复您确定要删除？', function(data){
+		if (data){
+			$.ajax({
+				type:'post',
+				url:"${ctx}/removeJob1.do?triggerName="+row.TRIGGER_NAME+"&group="+row.TRIGGER_GROUP,
+				success: function(data){
+					if(data=='success'){
+						dg.datagrid('reload');
+						parent.$.messager.show({ title : "提示",msg: "操作成功！", position: "bottomRight" });
+					}else{
+						parent.$.messager.alert(data);
+					}  
+				}
+			});
+		}
+	});
+}
+
+//修改表达式
+function upd(){
+	var row = dg.datagrid('getSelected');
+	if(rowIsNull(row)) return;
+	var rowIndex=dg.datagrid('getRowIndex',row);
+	dg.datagrid('beginEdit',rowIndex);
+}
+
+//确认修改
+function sureUpd(row){
+	parent.$.messager.confirm('提示', '确定要修改任务？', function(data){
+		if (data){
+			$.ajax({
+				type:'get',
+				url:"${ctx}/scheduleJob/"+row.name+"/"+row.group+"/update",
+				data:"cronExpression="+row.cronExpression,
+				success: function(data){
+					if(data=='success'){
+						dg.datagrid('reload');
+						parent.$.messager.show({ title : "提示",msg: "操作成功！", position: "bottomRight" });
+					}else{
+						parent.$.messager.alert(data);
+					}  
+				}
+			});
+			d.panel('close');
+		}else{
+			dg.datagrid('rejectChanges');
+		}
+	});
+}
+
+//立即运行一次
+function startNow(){
+	var row = dg.datagrid('getSelected');
+	if(rowIsNull(row)) return;
+	parent.$.messager.confirm('提示', '确定要立即运行一次该任务？', function(data){
+		if (data){
+			$.ajax({
+				type:'get',
+				url:"${ctx}/scheduleJob/"+row.name+"/"+row.group+"/startNow",
+				success: function(data){
+					if(data=='success'){
+						//dg.datagrid('reload');
+						parent.$.messager.show({ title : "提示",msg: "操作成功！", position: "bottomRight" });
+					}else{
+						parent.$.messager.alert(data);
+					}  
+				}
+			});
+		}
+	});
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.picc.dao.">
+	<resultMap id="BaseResultMap" type="com.picc.bean.user.UserUserRel">
+		<result column="user_user_acnt_id" property="userUserAcntId" jdbcType="VARCHAR" />
+		<result column="uur_type" property="uurType" jdbcType="VARCHAR" />
+		<result column="uur_type_code" property="uurTypeCode" jdbcType="VARCHAR" />
+		<result column="uur_a_acnt_name" property="uurAAcntName" jdbcType="VARCHAR" />
+		<result column="uur_a_acnt_code" property="uurAAcntCode" jdbcType="VARCHAR" />
+		<result column="uur_b_acnt_name" property="uurABcntName" jdbcType="VARCHAR" />
+		<result column="uur_b_acnt_code" property="uurABcntCode" jdbcType="VARCHAR" />
+		<result column="uur_state" property="uurState" jdbcType="VARCHAR" />
+		
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		user_user_acnt_id,uur_type,uur_type_code,uur_a_acnt_name,uur_a_acnt_code,
+		uur_b_acnt_name,uur_b_acnt_code,uur_state
+	</sql>
+
+	
+  
+
+</mapper>
